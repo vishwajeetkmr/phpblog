@@ -5,10 +5,6 @@ include "../functions.php";
 
 $db = new database();
 
-$query = "SELECT * FROM posts";
-
-$posts = $db->select($query);
-
 $query = "SELECT * FROM categories";
 
 $cats = $db->select($query);
@@ -42,8 +38,8 @@ $cats = $db->select($query);
       <div class="container">
         <nav class="blog-nav">
           <a class="blog-nav-item active" href="index.php">Dashboard</a>
-          <a class="blog-nav-item" href="#">Add New Post</a>
-          <a class="blog-nav-item" href="#">Add New Category</a>
+          <a class="blog-nav-item" href="add_post.php">Add New Post</a>
+          <a class="blog-nav-item" href="add_category.php">Add New Category</a>
           <a class="blog-nav-item pull-right" href="../index.php">View Blog</a>
           <a class="blog-nav-item pull-right" href="logout.php">Logout</a>
         </nav>
@@ -56,47 +52,38 @@ $cats = $db->select($query);
 
         <div class="col-sm-12 blog-main">
             <br>
-            <table class="table table-striped">
-                <tr align="center">
-                    <td colspan="4"><h1>Manage Your Posts:</h1></td>
-                </tr>
-                <tr>
-                    <th>Post ID</th>
-                    <th>Post Title</th>
-                    <th>Post Author</th>
-                    <th>Post Date</th>
-                </tr>
-                <?php while($row = $posts->fetch_array()) :?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td>
-                        <a href="edit_post.php?id=<?php echo $row['id']; ?>">
-                            <?php echo $row['title']; ?></a>
-                    </td>
-                    <td><?php echo $row['author']; ?></td>
-                    <td><?php echo formatDate($row['date']); ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </table>
-            
-            <table class="table table-striped">
-                <tr align="center">
-                    <td colspan="4"><h1>Manage Your Categories:</h1></td>
-                </tr>
-                <tr>
-                    <th>Category ID</th>
-                    <th>Category Title</th>
-                </tr>
-                <?php while($row1 = $cats->fetch_array()) :?>
-                <tr>
-                    <td><?php echo $row1['id']; ?></td>
-                    <td>
-                        <a href="edit_post.php?id=<?php echo $row1['id']; ?>">
-                            <?php echo $row1['title']; ?></a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </table>
+            <form action="add_post.php" method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label>Post Title:</label>
+    <input type="text" name="title" class="form-control"  placeholder="Enter a title">
+  </div>
+                <div class="form-group">
+                <label>Post Content:</label>    
+                <textarea class="form-control" rows="3" name="content" placeholder="content"></textarea>
+                <br>
+                <select class="form-control" name="cat">
+  <option>Select a Category</option>
+<?php while($row = $cats->fetch_array()) : ?>                     <option value="<?php echo $row['id']; ?>"><?php echo $row['title']; ?></option>
+<?php endwhile; ?>                    
+</select>
+                
+  <div class="form-group">
+    <label>Author Name:</label>
+    <input type="text" name="author" class="form-control"  placeholder="Enter Author Name">
+  </div>
+  <div class="form-group">
+    <label>Post Image:</label>
+    <input type="file" name="image">
+  </div>
+                
+    <div class="form-group">
+    <label>Tags:</label>
+    <input type="text" class="form-control"  placeholder="Enter Text" name="tags">
+  </div>            
+                
+  <button type="submit" class="btn btn-success" name="submit">Submit</button>
+    <a href="index.php" class="btn btn-danger">Cancel</a>                
+</form>
             
         </div><!-- /.blog-main -->
         <?php "includes/footer.php" ?>  
