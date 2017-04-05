@@ -9,6 +9,27 @@ $query = "SELECT * FROM categories";
 
 $cats = $db->select($query);
 
+if(isset($_POST['submit'])){
+    
+    $title = $_POST['title'];
+    $content = $_POST['content']; 
+    $cat = $_POST['cat'];
+    $author = $_POST['author'];
+    $tags = $_POST['tags'];
+    
+    $image = $_FILES['image']['name'];
+    $image_tmp = $_FILES['image']['tmp_name'];
+    
+    if($title=='' || $content=='' || $cat =='' || $author=='' || $tags==''){
+        echo "Please fill in all the fields";
+    }else{
+        move_uploaded_file($image_tmp,"../images/$image");
+        $query = "INSERT INTO posts (category_id,title,content,author,image,tags) VALUES  ('$cat','$title','$content','$author','$image','$tags')";
+        $run = $db->insert($query);
+    }
+    
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
