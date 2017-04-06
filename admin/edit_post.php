@@ -2,10 +2,23 @@
 include "../libs/config.php";
 include "../libs/database.php";
 include "../functions.php";
+
 $db = new database();
+
+$id = $_GET['id'];
+
+$query = "SELECT * FROM posts WHERE id='$id'";
+
+$posts = $db->select($query);
+
+$single = $posts->fetch_array();
+
 $query = "SELECT * FROM categories";
+
+
 $cats = $db->select($query);
-if(isset($_POST['submit'])){
+
+if(isset($_POST['update'])){
     
     $title = $_POST['title'];
     $content = $_POST['content']; 
@@ -20,8 +33,10 @@ if(isset($_POST['submit'])){
         echo "Please fill in all the fields";
     }else{
         move_uploaded_file($image_tmp,"../images/$image");
-        $query = "INSERT INTO posts (category_id,title,content,author,image,tags) VALUES  ('$cat','$title','$content','$author','$image','$tags')";
-        $run = $db->insert($query);
+        $query = "UPDATE posts SET category_id='$cat',title='$title',content='$content',author='$author',image='$image',tags='$tags' WHERE id='$id'";
+        $run = $db->update($query);
+        
+        unlink("../images/".$single['image']);
     }
     
 }
@@ -68,14 +83,14 @@ if(isset($_POST['submit'])){
 
         <div class="col-sm-12 blog-main">
             <br>
-            <form action="add_post.php" method="post" enctype="multipart/form-data">
+            <form action="edit_post.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
   <div class="form-group">
     <label>Post Title:</label>
-    <input type="text" name="title" class="form-control"  placeholder="Enter a title">
+    <input type="text" name="title" class="form-control"  placeholder="Enter a title" value="<?php echo  $single['title']; ?>">
   </div>
                 <div class="form-group">
                 <label>Post Content:</label>    
-                <textarea class="form-control" rows="3" name="content" placeholder="content"></textarea>
+                <textarea class="form-control" rows="3" name="content" plac eholder="content"><?php echo  $single['content']; ?></textarea>
                 <br>
                 <select class="form-control" name="cat">
   <option>Select a Category</option>
@@ -85,20 +100,22 @@ if(isset($_POST['submit'])){
                 
   <div class="form-group">
     <label>Author Name:</label>
-    <input type="text" name="author" class="form-control"  placeholder="Enter Author Name">
+    <input type="text" name="author" class="form-control"  placeholder="Enter Author Name" value="<?php echo  $single['author']; ?>">
   </div>
   <div class="form-group">
     <label>Post Image:</label>
     <input type="file" name="image">
+    <img src="../images/<?php echo $single['image']; ?>" width="150" height="100"> 
   </div>
                 
     <div class="form-group">
     <label>Tags:</label>
-    <input type="text" class="form-control"  placeholder="Enter Text" name="tags">
+    <input type="text" class="form-control"  placeholder="Enter Text" name="tags" value="<?php echo  $single['tags']; ?>">
   </div>            
                 
-  <button type="submit" class="btn btn-success" name="submit">Submit</button>
-    <a href="index.php" class="btn btn-danger">Cancel</a>                
+  <button type="submit" class="btn btn-default" name="update">Update</button>
+    <a href="index.php" class="btn btn-success">Cancel</a>
+    <a href="delete_post.php?id=<?php echo $id; ?>" class="btn btn-danger">Delete</a>                
 </form>
             
         </div><!-- /.blog-main -->

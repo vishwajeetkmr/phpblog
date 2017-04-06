@@ -56,6 +56,11 @@ $cats = $db->select($query);
 
         <div class="col-sm-12 blog-main">
             <br>
+            <?php
+            if(isset($_GET['msg'])){
+                echo "<div class='alert alert-success'>".$_GET['msg']."</div>";
+            }
+            ?>
             <table class="table table-striped">
                 <tr align="center">
                     <td colspan="4"><h1>Manage Your Posts:</h1></td>
@@ -91,7 +96,7 @@ $cats = $db->select($query);
                 <tr>
                     <td><?php echo $row1['id']; ?></td>
                     <td>
-                        <a href="edit_post.php?id=<?php echo $row1['id']; ?>">
+                        <a href="edit_category.php?id=<?php echo $row1['id']; ?>">
                             <?php echo $row1['title']; ?></a>
                     </td>
                 </tr>

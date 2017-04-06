@@ -36,7 +36,7 @@ private function connect(){
         $insert = $this->link->query($query);
         
         if($insert){
-            header('location: index.php?insert=Post Inserted...');
+            header('location: index.php?msg=Post Inserted...');
         }else{
             echo "Post didnot Insert...";
         }
@@ -48,7 +48,7 @@ private function connect(){
         $update = $this->link->query($query);
         
         if($update){
-            header('location: index.php?insert=Post Updated...');
+            header('location: index.php?msg=Post Updated...');
         }else{
             echo "Post didnot Updated...";
         }
@@ -59,7 +59,7 @@ private function connect(){
         $delete = $this->link->query($query);
         
         if($delete){
-            header('location: index.php?insert=Post Deleted...');
+            header('location: index.php?msg=Post Deleted...');
         }else{
             echo "Post didnot Delete...";
         }

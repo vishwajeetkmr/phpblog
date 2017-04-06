@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "libs/config.php";
 include "libs/database.php";
 include "functions.php";
@@ -42,11 +43,14 @@ $posts = $db->select($query);
           <a class="blog-nav-item" href="#">Services</a>
           <a class="blog-nav-item" href="#">About</a>
           <a class="blog-nav-item" href="#">Contact</a>
+            
+        <?php if(isset($_SESSION['email'])) : ?>    
+          <a class="blog-nav-item pull-right" href="admin/index.php">Go to Admin Panel</a>  <?php endif; ?>  
         </nav>
       </div>
     </div>
 
-    <div class="container">
+    <div class="container"> 
 
       <div class="blog-header">
         <h1 class="blog-title">PHP Tutorial Blog</h1>
